@@ -14,14 +14,29 @@ library(shiny)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("What is the next word? - Under Construction"),
+  titlePanel("What is the next word?"),
   
   
   sidebarLayout(
     sidebarPanel(
           br(),
+          h4("Enter a phrase with at least 3 words."),
+          p("Before entering any phrase, you will see 10 predicted words
+             following the phrase 'World Hunger Is Serious...' as it is preset as the input
+             for you to see the action"),
           
-          textInput("searchTerms","Enter your phrase"),
+          textInput("searchTerms","Enter your phrase:", value="World Hunger Is Serious"),
+          
+          hr(),
+          
+          h5("Choose the number of next words predicted you want to see"),
+          sliderInput("topNum",
+                      "Number of predicted words:",
+                      min = 5,
+                      max = 50,
+                      value = 10,
+                      step = 1,
+                      sep=""),
           
           submitButton("Submit"),
           
@@ -31,37 +46,37 @@ shinyUI(fluidPage(
           a(href="http://suzow.us","About this app"),
           br(),
           hr()
-          # tags$div("These estimates are based on"),
-          # tags$a("the Migration and Remittances 
-          #        Factbook 2016, which includes new bilateral data on migration stocks, 
-          #        World Bank.  ", href="https://www.worldbank.org/prospects/migrationandremittances"),
+          # tags$div(""),
+          # tags$a("", href="https://www.dummyurl"),
           # 
           
           # br(),
-          # tags$p("The database of the UN Population Division (UNPD) is the most comprehensive 
-          #        source of information on international migrant stocks for the period 1960–2013. "),
-          # tags$a("Read more ...",href="https://www.knomad.org/data/faqs")
+          # tags$p(" "),
+          # tags$a("",href="https://www.dummyurl")
        
     ), # sidebarPanel
     
     # Show a plot of the generated distribution
     mainPanel(
        tabsetPanel(type="tabs",
-          tabPanel("Top 10 words predicted to follow the phrase you entered",
+                   
+          tabPanel("Next Word Prediction",
              br(),
-             htmlOutput("Top10_words_text"),
+             htmlOutput("Top_words_text"),
              hr(),
-             tableOutput("Top10_words_table")
+             
+             tableOutput("Top_words_table")
+             
                             
-          ), # tabPanel - Top10
+          ) # tabPanel - Top10
 
-          tabPanel("Top 100 words predicted",
-             br(),
-             htmlOutput("Top100_words_text"),
-             hr(),
-             tableOutput("Top100_words_table")
-
-          ) # tablPanel - Top100
+          # tabPanel("Top 100 words predicted",
+          #    br(),
+          #    htmlOutput("Top100_words_text"),
+          #    hr(),
+          #    tableOutput("Top100_words_table")
+          # 
+          # ) # tablPanel - Top100
                    
        ) # tabsetPanel
     ) # mainPanel
