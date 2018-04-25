@@ -5,7 +5,6 @@
 # 
 #    http://shiny.rstudio.com/
 #
-
 # The app URL on the Rstudio Shiny server: https://bsuzow.shinyapps.io/KBO1APP/
 
 library(shiny)
@@ -29,7 +28,7 @@ shinyUI(fluidPage(
           
           hr(),
           
-          h5("Choose the number of next words predicted you want to see"),
+          h5("Choose the number of words you want to see predicted as the likely next word"),
           sliderInput("topNum",
                       "Number of predicted words:",
                       min = 5,
@@ -43,7 +42,7 @@ shinyUI(fluidPage(
           br(),
           hr(),
           
-          a(href="http://suzow.us","About this app"),
+       #   a(href="http://suzow.us","About this app"),
           br(),
           hr()
           # tags$div(""),
@@ -69,14 +68,6 @@ shinyUI(fluidPage(
              
                             
           ) # tabPanel - Top10
-
-          # tabPanel("Top 100 words predicted",
-          #    br(),
-          #    htmlOutput("Top100_words_text"),
-          #    hr(),
-          #    tableOutput("Top100_words_table")
-          # 
-          # ) # tablPanel - Top100
                    
        ) # tabsetPanel
     ) # mainPanel

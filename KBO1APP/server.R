@@ -1,15 +1,12 @@
+# BYS 3.1.18
+# This is the server.R for the What is the next word shiny app.
 #
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+# BYL 3.12.18
+# The quanteda package installation hung on my Shiny server.  Thus, the references to the package
+# and its tokens functions are replaced with alternative code.
 
 library(shiny)
 library(dplyr)
-library(quanteda)
 source('NLP_KBO.R') 
 
 # Define server logic required to draw a histogram
@@ -28,16 +25,16 @@ shinyServer(function(input, output) {
    trBV3 <<- readRDS(file="trBV3.Rds")
    trBV4 <<- readRDS(file="trBV4.Rds")  
    
-   stopwords.vec = tokens(as.character(stopwordDF$term),remove_punct=TRUE) # remove punctuations from stopwords list
-   # tokens_remove() throws error otherwise
-   stopwords.vec = as.character(stopwords.vec)
+   stopwords.vec = as.character(stopwordDF$x)
    
    searchTerms = reactive({
       
       Terms = tolower(input$searchTerms)
-      Terms = tokens(Terms,remove_punct=TRUE)
-      Terms = tokens_remove(Terms,stopwords.vec)  # this function bombs when the stopword character vector contains punctuations
-      Terms = as.character(Terms)
+      Terms = strsplit(Terms," ")[[1]]
+      
+      Terms = gsub(x=Terms,pattern=paste(stopwords.vec,collapse = "|"),replacement="")
+      Terms = Terms[Terms !=""]
+      
       if (length(Terms)>=3) {
          Terms = Terms[(length(Terms)-2):length(Terms)]  # take the last 3 words
          Terms = paste0(as.character(Terms),"_",collapse="") # add the _ char as the delimiter and string them along
@@ -54,7 +51,6 @@ shinyServer(function(input, output) {
    
    })
    
-   
    output$Top_words_text = renderUI({
       
       if (searchTerms()!=""){
@@ -66,7 +62,6 @@ shinyServer(function(input, output) {
             paste0("Unfortunately, I cannot predict any words following <b>",input$searchTerms,"</b>")
          )
       }
-         
    }) # Top_words_text
    
    output$Top_words_table = renderTable({
